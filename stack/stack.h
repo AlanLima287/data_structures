@@ -3,8 +3,8 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 
-// Alan Lima (https://github.com/AlanLima287/)
-// BitTools - 0.0.5
+// Alan Lima - https://github.com/AlanLima287/data_structures/tree/main/stack
+// Stack - 0.0.1
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -44,7 +44,7 @@ typedef struct __Stack {
 } __Stack;
 
 #ifndef __stack_min_allocation_size
-   #define __stack_min_allocation_size 16
+   #define __stack_min_allocation_size 16ull
 #endif
 
 #ifndef __stack_scalling_function

@@ -12,6 +12,8 @@ extern bool __stack_init(__Stack* stack, size_t size) {
 }
 
 extern bool __stack_reserve(__Stack* stack, size_t size) {
+   if (stack->top + size <= stack->capacity) return true;
+
    do stack->capacity = __stack_scalling_function(stack->capacity);
    while (stack->capacity < size + stack->top);
 

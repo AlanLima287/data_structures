@@ -27,23 +27,37 @@ typedef struct {
 
 ### Macros
 
+| Macro name                                                  | Parameters         | Predefinable |
+| ----------------------------------------------------------- | ------------------ | ------------ |
+| `stack_default`(#stack_default)                             | _`prefix`_         | no           |
+| `stack_typedef`(#stack_typedef)                             | _`decl`_, _`type`_ | no           |
+| `__stack_min_allocation_size`(#__stack_min_allocation_size) | none               | yes          |
+| `__stack_scalling_function`(#__stack_scalling_function)     | _`x`_              | yes          |
 
+#### `stack_default`
+#### `stack_typedef`
+
+#### `__stack_min_allocation_size`
+
+Is a object-like macro that defines a integer value, preferably of `size_t` type,   
+
+#### `__stack_scalling_function`
 
 ### Functions
 
-| Function name                                     | Type                      |
-| ------------------------------------------------- | ------------------------- |
-| [`__stack_init         `](#__stack_init)          | `bool   (__Stack, size_t) |
-| [`__stack_reserve      `](#__stack_reserve)       | `bool   (__Stack, size_t) |
-| [`__stack_reserve_exact`](#__stack_reserve_exact) | `bool   (__Stack, size_t) |
-| [`__stack_clear        `](#__stack_clear)         | `void   (__Stack)         |
-| [`__stack_free         `](#__stack_free)          | `void   (__Stack)         |
-| [`__stack_size         `](#__stack_size)          | `size_t (__Stack)         |
-| [`__stack_frame        `](#__stack_frame)         | `void*  (__Stack)         |
-| [`__stack_push         `](#__stack_push)          | `void*  (__Stack, size_t) |
-| [`__stack_peek         `](#__stack_peek)          | `void*  (__Stack, size_t) |
-| [`__stack_pop          `](#__stack_pop)           | `void*  (__Stack, size_t) |
-| [`__stack_disown       `](#__stack_disown)        | `void*  (__Stack)         |
+| Function name           | Type                      |
+| ----------------------- | ------------------------- |
+| `__stack_init`          | `bool (__Stack*, size_t)  |
+| `__stack_reserve`       | `bool (__Stack*, size_t)  |
+| `__stack_reserve_exact` | `bool (__Stack*, size_t)  |
+| `__stack_clear`         | `void (__Stack*)          |
+| `__stack_free`          | `void (__Stack*)          |
+| `__stack_size`          | `size_t (__Stack*)        |
+| `__stack_frame`         | `void* (__Stack*)         |
+| `__stack_push`          | `void* (__Stack*, size_t) |
+| `__stack_peek`          | `void* (__Stack*, size_t) |
+| `__stack_pop`           | `void* (__Stack*, size_t) |
+| `__stack_disown`        | `void* (__Stack*)         |
 
 #### Initialization function `__stack_init`
 
@@ -51,38 +65,55 @@ typedef struct {
 bool __stack_init(__Stack* stack, size_t size);
 ```
 
-This function behavior is, basically,
+This function initializes, i.e., allocates a memory for the `frame` pointer. The size of this memory, in bytes, will depend both in the `size` parameter and the macro `__stack_min_allocation_size`, the actual size will be `size` < `__stack_min_allocation_size` ? `__stack_min_allocation_size` : `size`, that is, their maximum.
+
+#### Reserve function `__stack_reserve`
+
+```C
+bool __stack_reserve(__Stack* stack, size_t size);
+```
+
+This function reserves _at least_ for `size` new bytes in the stack. It does nothing if there is enough space. The new allocated space can be defined the following way: If the top of the stack plus `size` is less or equal the the capacity, then we will allocate that capacity if it isn't already allocated. Otherwise, `capacity = __stack_scalling_function(capacity)`, then this condition is tested again.
+
+#### Reserve exact function `__stack_reserve_exact`
+
+```C
+bool __stack_reserve_exact(__Stack* stack, size_t size);
+```
+
+This function reserves _exactly_ for `size` new bytes in the stack. It does nothing if there is already enough space. Otherwise, it sums the top offset to `size`, thus obtaining the new capacity.
+
+[!WARN] Test
+
+#### Clear stack function `__stack_clear`
+
+```C
+void __stack_clear(__Stack* stack);
+```
+
+This function sets the top to zero, effectively clearing the stack. No memory operations are done by this function.
+
+### Free stack function `__stack_free`
+
+```C
+void __stack_free(__Stack* stack);
+```
+
+This function calls free (the stdlib function) on the stack frame. It presents undefined behavior if call on a uninitialized stack structure.
+
+#### Stack size function `__stack_size`
+size_t __stack_size (__Stack*)
+#### Return frame function `__stack_frame`
+void* __stack_frame (__Stack*)
+#### Push function `__stack_push`
+void* __stack_push (__Stack*, size_t)
+#### Peek function `__stack_peek`
+void* __stack_peek (__Stack*, size_t)
+#### Pop function `__stack_pop`
+void* __stack_pop (__Stack*, size_t)
+#### Disown function `__stack_disown`
+void* __stack_disown (__Stack*)
 
 ## References
 
 * [Wikipedia - Stack (abstract data type)](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
-
-```
-┌ ┐        ┌ ┐        ┌ ┐        ┌ ┐        ┌ ┐
-│ │        │ │        │ │        │%│        │ │
-│D│  pop   │ │ push # │#│ push % │#│  pop   │#│
-│C│ =====> │C│ =====> │C│ =====> │C│ =====> │C│
-│B│        │B│        │B│        │B│        │B│
-│A│        │A│        │A│        │A│        │A│
-└─┘        └─┘        └─┘        └─┘        └─┘
-
-```
-
-<!--
-┌┬┐
-├┼┤
-│┴│
-└─┘
--->
-
-```JS
-const stack = ['A', 'B', 'C', 'D']
-
-console.log(stack.pop()) // 'D'
-
-stack.push('#'); console.log(stack) // (4) ['A', 'B', 'C', '#']
-
-stack.push('%'); console.log(stack) // (5) ['A', 'B', 'C', '#', '%']
-
-console.log(stack.pop()) // '%'
-```
