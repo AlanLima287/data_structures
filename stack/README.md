@@ -93,7 +93,7 @@ void __stack_clear(__Stack* stack);
 
 This function sets the top to zero, effectively clearing the stack. No memory operations are done by this function.
 
-### Free stack function `__stack_free`
+#### Free stack function `__stack_free`
 
 ```C
 void __stack_free(__Stack* stack);

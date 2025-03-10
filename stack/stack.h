@@ -132,4 +132,8 @@ void* __stack_pop(__Stack* stack, size_t size);
  */
 void* __stack_disown(__Stack* stack);
 
+#ifdef IMPLEMENT
+   #include "stack.c"
+#endif
+
 #endif
