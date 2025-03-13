@@ -1,16 +1,15 @@
 # Implementing Data Structures from Scratch
 
-In this project I will implement various kinds of data structures.
+In this project, I will implement various kinds of data structures.
 
 ## Table of Content
 
-* [Preliminaries](#preliminaries)
-* [Data Structures](#data-structures)
-   * [Stack](#stack)
+<!-- * [Preliminaries](#preliminaries) -->
+- [Data Structures](#data-structures)
+   - [Arena](#arena)
+   - [Stack](#stack)
 
-## Preliminaries
-
-<!-- To begin with, we shall define somethings, working with C, things like generics, quite useful for this kind of application, are missing, to cope with that, we're stick to the following convention: -->
+<!-- ## Preliminaries 
 
 This project will follow the guidelines listed below:
 
@@ -32,13 +31,35 @@ This project will follow the guidelines listed below:
 
 * Non-templating macros will check if a previous definition exists, so they are overridable, beware that overriding macros my lead to undefined or unwanted behavior
 
-* Use of `size_t` for integer sizes.
+* Use of `size_t` for integer sizes. -->
 
 ## Data Structures
 
+### Arena
+
+[Arena Alloc](arena/)
+
+```
+  ┌────────────┐
+  │ q. b. 23.3 │
+  │ Hello () d │                ┌────────────┐  ┌──>Ø
+  └────────────┴┐               │ [1,2,3] 44 ├──┘
+                ├────────────┐  │ ,34 a      │
+                │ World .dsd │ ┌┴────────────┘
+                │ 1233 ....d │ │
+                └────────────┴─┘
+```
+
+<!--
+┌┬┐
+├┼┤
+│┴│
+└─┘
+-->
+
 ### Stack
 
-[Go to stack](stack/)
+[Get Pushed](stack/)
 
 ```
                                          ┌   ┐        ┌   ┐
@@ -50,22 +71,3 @@ This project will follow the guidelines listed below:
   │ A │        │ A │        │ A │        │ A │        │ A │
   └───┘        └───┘        └───┘        └───┘        └───┘
 ```
-
-<!--
-┌┬┐
-├┼┤
-│┴│
-└─┘
--->
-
-<!-- ```JS
-const stack = ['A', 'B', 'C', 'D']
-
-console.log(stack.pop()) // 'D'
-
-stack.push('#'); console.log(stack) // (4) ['A', 'B', 'C', '#']
-
-stack.push('%'); console.log(stack) // (5) ['A', 'B', 'C', '#', '%']
-
-console.log(stack.pop()) // '%'
-``` -->

@@ -3,7 +3,7 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 
-// Alan Lima - https://github.com/AlanLima287/data_structures/tree/main/stack
+// Alan Lima (https://github.com/AlanLima287/data_structures/tree/main/stack)
 // Stack - 0.0.1
 
 #include <stdbool.h>
@@ -18,6 +18,7 @@
    static inline void prefix ## _clear(Stack* stack) { __stack_clear(stack); } \
    static inline void prefix ## _free(Stack* stack) { __stack_free(stack); } \
    static inline size_t prefix ## _size(Stack* stack) { return __stack_size(stack); } \
+   static inline size_t prefix ## _remaining_size(Stack* stack) { return __stack_remaining_size(stack); } \
    static inline void* prefix ## _push(Stack* stack, size_t size) { return __stack_push(stack, size); } \
    static inline void* prefix ## _peek(Stack* stack, size_t size) { return __stack_peek(stack, size); } \
    static inline void* prefix ## _pop(Stack* stack, size_t size) { return __stack_pop(stack, size); } \
@@ -31,6 +32,7 @@
    static inline void prefix ## _clear(decl* stack) { __stack_clear(stack); } \
    static inline void prefix ## _free(decl* stack) { __stack_free(stack); } \
    static inline size_t prefix ## _size(decl* stack) { return __stack_size(stack) / sizeof(type); } \
+   static inline size_t prefix ## _remaining_size(decl* stack) { return __stack_remaining_size(stack) / sizeof(type); } \
    static inline type* prefix ## _frame(decl* stack) { return (type*)__stack_frame(stack); } \
    static inline type* prefix ## _push(decl* stack, size_t n) { return (type*)__stack_push(stack, n * sizeof(type)); } \
    static inline type* prefix ## _peek(decl* stack, size_t n) { return (type*)__stack_peek(stack, n * sizeof(type)); } \
@@ -92,6 +94,14 @@ static inline void __stack_free(__Stack* stack) {
  */
 static inline size_t __stack_size(__Stack* stack) {
    return stack->top;
+}
+
+/* Returns the remaining space (capacity - top) of the stack
+ * @param  stack: a pointer to a stack structure
+ * @return        returns the remaining size of the stack in bytes
+ */
+static inline size_t __stack_remaining_size(__Stack* stack) {
+   return stack->capacity - stack->top;
 }
 
 /* Returns the size (top) of the stack
