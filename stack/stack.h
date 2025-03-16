@@ -4,7 +4,7 @@
 #define __STACK_H__
 
 // Alan Lima (https://github.com/AlanLima287/data_structures/tree/main/stack)
-// Stack - 0.0.1
+// Stack - 0.0.2
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -46,7 +46,11 @@ typedef struct __Stack {
 } __Stack;
 
 #ifndef __stack_min_allocation_size
-   #define __stack_min_allocation_size 16ull
+   #define __stack_min_allocation_size 32ull
+#endif
+
+#ifndef __stack_max_allocation_size
+   #define __stack_max_allocation_size 0x7FFF'FFFF'FFFF'FFFF'FFFF'FFFFi64
 #endif
 
 #ifndef __stack_scalling_function
@@ -67,7 +71,7 @@ bool __stack_init(__Stack* stack, size_t size);
  */
 bool __stack_reserve(__Stack* stack, size_t size);
 
-/* Reverse space for exacly `size` new elements at the top of the stack
+/* Reverse space for exacly `size` new elements at the top of the stack.
  * @param  stack: a pointer to a stack structure
  * @param  size:  the amount of bytes to be reserved for the stack
  * @return        returns `true` on success, `false` otherwise
@@ -88,7 +92,15 @@ static inline void __stack_free(__Stack* stack) {
    free(stack->frame);
 }
 
-/* Returns the size (top) of the stack
+/* Returns whether the stack is empty or not.
+ * @param  stack: a pointer to a stack structure
+ * @return        returns `true` if the stack is empty, `false` otherwise
+ */
+static inline size_t __stack_is_empty(__Stack* stack) {
+   return stack->top == 0;
+}
+
+/* Returns the size (top) of the stack.
  * @param  stack: a pointer to a stack structure
  * @return        returns the size of the stack in bytes
  */
