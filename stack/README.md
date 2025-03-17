@@ -18,6 +18,7 @@ Other operation may be defined in a stack, however these are the main ones.
       - [`stack_default`](#stack_default)
       - [`stack_typedef`](#stack_typedef)
       - [`__stack_min_allocation_size`](#__stack_min_allocation_size)
+      - [`__stack_max_allocation_size`](#__stack_max_allocation_size)
       - [`__stack_scalling_function`](#__stack_scalling_function)
    - [Functions](#functions)
       - [Initialization function `__stack_init`](#initialization-function-__stack_init)
@@ -60,6 +61,7 @@ typedef struct {
 | `stack_default`               | _`prefix`_                     | no           |
 | `stack_typedef`               | _`decl`_, _`type`_, _`prefix`_ | no           |
 | `__stack_min_allocation_size` | none                           | yes          |
+| `__stack_max_allocation_size` | none                           | yes          |
 | `__stack_scalling_function`   | _`x`_                          | yes          |
 
 ### `stack_default`
@@ -72,7 +74,11 @@ It's a function-like macro used to define the typed stack.
 
 ### `__stack_min_allocation_size`
 
-It's a object-like macro that defines a integer value, preferably of `size_t` type, the default value is 0x20 (32).
+It's a object-like macro that defines a integer value, preferably of `size_t` type, for the manimum size for the stack. The default value is 0x20 (32).
+
+### `__stack_max_allocation_size`
+
+It's a object-like macro that defines a integer value, preferably of `size_t` type, for the maximum size for the stack. The default value is 0x7FFF'FFFF'FFFF'FFFF'FFFF'FFFF (2 ** 47).
 
 ### `__stack_scalling_function`
 
